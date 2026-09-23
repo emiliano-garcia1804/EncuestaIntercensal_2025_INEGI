@@ -49,3 +49,6 @@ def generate(source, destination):
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('workbook',type=Path);parser.add_argument('--out',type=Path,default=Path(__file__).resolve().parent)
     args=parser.parse_args();generate(args.workbook,args.out)
+    if args.out.resolve()==Path(__file__).resolve().parent:
+        from build_dashboard import build
+        build()

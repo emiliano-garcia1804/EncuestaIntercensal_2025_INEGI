@@ -1,4 +1,4 @@
-# Personas · Explorador por alcaldía
+# Encuesta Intercensal · Ciudad de México
 
 Dashboard estático de los registros de `Personas_EncuestaIntercensal.xlsx`. Se abre con doble clic en `index.html` y funciona sin conexión, sin instalación y sin servicios externos. Mantén todos los archivos HTML, CSS y JS de esta carpeta juntos.
 
@@ -62,3 +62,7 @@ El navegador recibe conteos agregados por alcaldía y variable, sin filas indivi
 `index.html`: estructura; `styles.css` y `explorer.css`: diseño adaptable; `app.js`: filtros y gráficas; `explorer.js`: estimación, mapa y referencia; `data.js`: conteos; `map.js`: polígonos y procedencia; `reference.js`: total, poblaciones 2025, referencia 2020 y cifras de edad y sexo de la imagen. JavaScript y CSS nativos, sin dependencias de navegador. `prepare_data.py` requiere openpyxl únicamente para actualizar la extracción y conserva los insumos de referencia y mapa. Al cambiar los insumos poblacionales, actualiza `reference.js` y revisa que las claves coincidan con el catálogo.
 
 Verificado: 612 combinaciones de base, alcaldía, variable, escala y filtro de origen; conciliación de la muestra y del total ajustado; correspondencia de las 16 claves con el mapa; selección de Cuauhtémoc mediante su polígono en el navegador. Se revisó visualmente el mapa. Las categorías pequeñas se consultan en la tabla o al situar el cursor sobre la barra.
+
+## Carga y publicación
+
+El navegador carga `dashboard.bundle.js`, que reúne datos, mapa, referencias y lógica en un solo archivo. El HTML incluye una versión por contenido para evitar mezclar archivos antiguos de la caché. Al modificar los archivos JS fuente, ejecuta `python build_dashboard.py` y publica también `index.html` y `dashboard.bundle.js`. Si falta el archivo principal se muestra un aviso, en lugar de dejar el mapa vacío.
