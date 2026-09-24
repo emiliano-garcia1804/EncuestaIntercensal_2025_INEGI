@@ -55,3 +55,5 @@ Los archivos heredados `app.js`, `explorer.js`, `data.js`, `reference.js`, `data
 Se conciliaron 680 celdas de valores con el Excel extraído, se comprobaron las 13 hojas y 108 combinaciones de ámbito, tema y selección. Se verificaron las 16 regiones del mapa, la ausencia explícita de Milpa Alta donde corresponde y que el bundle no incluya datos de microdatos ni referencias poblacionales anteriores.
 
 La vista de población de CDMX compara 2020 y 2025 para el total y cada alcaldía seleccionada, con cambio absoluto, porcentual, gráfica y tabla comparativa. La base 2020 se conserva en `population-city-2020.json`: tabla complementaria proporcionada por el usuario, relacionada por nombre con Poblacion Cdmx del Excel (2025). Sus 16 filas suman 9,209,944.
+
+Paleta institucional proporcionada por el usuario: guinda #9F2241 y dorado #BC955C (conversación «Simplify page toggles»). Encabezado e icono de encuesta, gráficas, mapa y controles comparten esta paleta.
