@@ -1,0 +1,41 @@
+{
+  "source": "Data_Actualizada.xlsx",
+  "sha256": "e275d80b86b99297e5752b7befae7e1077620e32731f2c23e9af4ba601f7bc0d",
+  "sheets": {
+    "birth": 15,
+    "residence": 15,
+    "populationNational": 33,
+    "populationCity": 17,
+    "educationNational": 9,
+    "educationCity": 9,
+    "incomeNational": 5,
+    "incomeCity": 5,
+    "housingCity": 16,
+    "housingType": 8,
+    "disabilityNational": 6,
+    "disabilityCity": 6,
+    "healthNational": 9
+  },
+  "issues": [
+    {
+      "sheet": "Vivienda por Alcaldía",
+      "message": "Cantidad: las filas suman 2,979,488; el total publicado en la hoja es 3,022,557. Diferencia: -43,069."
+    },
+    {
+      "sheet": "Discapacidad Cdmx",
+      "message": "2020: las filas suman 1,703,827; el total publicado en la hoja es 1,703,791. Diferencia: 36."
+    },
+    {
+      "sheet": "Ingresos Monetarios CDMX",
+      "message": "La columna Estructura divide entre el total nacional (39,699,242), no entre el total CDMX. Las gráficas usan cantidades; la tabla conserva ese campo original."
+    },
+    {
+      "sheet": "Discapacidad Cdmx",
+      "message": "La única columna de año es 2020. No hay valor 2025 en esta hoja."
+    },
+    {
+      "sheet": "Salud",
+      "message": "Hay llamadas a notas cuyo texto no está incluido. No se infieren universos o exclusividad de categorías."
+    }
+  ]
+}

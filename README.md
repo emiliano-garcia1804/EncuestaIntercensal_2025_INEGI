@@ -1,68 +1,57 @@
-# Encuesta Intercensal · Ciudad de México
+# Encuesta Intercensal · CDMX y Nacional
 
-Dashboard estático de los registros de `Personas_EncuestaIntercensal.xlsx`. Se abre con doble clic en `index.html` y funciona sin conexión, sin instalación y sin servicios externos. Mantén todos los archivos HTML, CSS y JS de esta carpeta juntos.
+Tablero estático que utiliza **exclusivamente los tabulados de Data_Actualizada.xlsx**. No combina microdatos, estimaciones antiguas ni factores de expansión propios. Solo reutiliza la cartografía del tablero anterior.
 
-## Estimación ajustada y mapa
+## Uso
 
-La vista inicial aplica los porcentajes de la muestra a los totales por alcaldía de la columna 2025 de la imagen proporcionada por el usuario. Los 16 valores suman exactamente **9,165,819**. La tabla 2020 se conserva como referencia, pero ya no se usa para distribuir el total.
+Abre `index.html` o publica esta carpeta en GitHub Pages. Conserva junto al HTML `dashboard.bundle.js`, `styles.css`, `explorer.css` y `tabulados.css`. No requiere instalación para consultarlo y funciona sin conexión. Los scripts fuente están reunidos en el archivo bundle y las rutas llevan una versión por contenido para evitar mezclas de caché.
 
-Para cada alcaldía: `factor = población 2025 / registros de la alcaldía`; `personas estimadas del grupo = registros del grupo × factor`. La cifra de CDMX suma las estimaciones de las 16 alcaldías. Los porcentajes dentro de cada alcaldía permanecen iguales; los porcentajes de CDMX se ponderan por los nuevos totales.
+Las pestañas **CDMX** y **Nacional** tienen su propio selector de tema:
 
-Los totales 2025 son datos proporcionados; la composición por origen es una estimación propia, no una expansión oficial de la encuesta. Se supone que los registros representan la composición dentro de cada alcaldía. No se dispone de probabilidades de selección ni diseño muestral para calcular márgenes de error. El universo de la primera imagen es viviendas particulares habitadas; no se ha confirmado su equivalencia exacta con el de la nueva tabla y el archivo. No se ajusta adicionalmente por sexo o edad. Las cantidades aproximadas se marcan con ≈ y los subtotales pueden diferir por redondeo.
+- CDMX: nacimiento, residencia hace cinco años, población y sexo, educación, ingresos monetarios, vivienda y discapacidad.
+- Nacional: población por entidad, educación, ingresos monetarios, discapacidad y salud.
 
-Se transcribió Milpa Alta = 390,541 tal como aparece en la columna 2025; no se sustituyó ni corrigió a partir de su valor 2020. La fuente de los valores es la imagen del usuario, sin verificación externa de la publicación.
+El mapa permite seleccionar por nombre las alcaldías en población y las localidades del mismo nombre en origen y residencia. No se equipara la localidad con toda su demarcación. Milpa Alta tiene población en el archivo, pero no figura en las hojas de nacimiento, residencia o vivienda por alcaldía: se muestra **Sin dato**.
 
-El selector de base permite volver a registros sin expandir. Nacidos fuera de CDMX agrupa otra entidad y extranjero. No mide migración reciente ni situación migratoria.
+Cada tema ofrece gráficas y el tabulado completo con fuente por hoja. Las cantidades gráficas se redondean a enteros; los datos conservan precisión y la tabla muestra hasta seis decimales. No se convierten cantidades de ingresos en pesos ni se inventan universos que el Excel no documenta.
 
-El mapa selecciona las alcaldías por clic o teclado y sincroniza las cifras y gráficas de origen. Usa polígonos del [Servicio Web de INEGI](https://gaia.inegi.org.mx/wscatgeo/v2/geo/mgem/09), cuyo metadato indica Marco Geoestadístico, diciembre de 2025. Se incorpora la geometría localmente en `map.js` con proyección equirectangular ajustada a la latitud de CDMX; no usa mapas externos ni los campos poblacionales del servicio. Los colores representan porcentajes, con escala mínimo–máximo de las 16 alcaldías.
+## Fuente y cálculos
 
-La distribución por edad y los porcentajes de sexo de la imagen se presentan como referencia para CDMX completa y no cambian al seleccionar una alcaldía. Sus cuatro grupos de edad suman 9,165,819. Los supuestos, insumos y factores por alcaldía también están en la sección desplegable del tablero.
+`tabulados.js` contiene la extracción de las 13 hojas, con etiqueta original, fila de Excel, valores y notas. `tabulados-audit.json` contiene la huella SHA-256, filas por hoja y observaciones. Los nombres normalizados emparejan filas y mapa, retirando acentos, espacios y prefijos de localidad; se reconoce la errata «Gustvo A. Madero» como «Gustavo A. Madero», sin alterar su cifra ni la etiqueta del tabulado original.
 
-## Qué incluye
+Solo se calculan cocientes, diferencias y agregaciones dentro de los tabulados:
 
-- Distribución por sexo en cada alcaldía, siguiendo la codificación proporcionada: 1 mujeres y 3 hombres.
-- Nacionalidad mexicana, no mexicana y no especificada.
-- Nacimiento en Ciudad de México, otra entidad de México, extranjero o no especificado.
-- Ranking de entidades, países y otros lugares del catálogo por alcaldía, con conteos y porcentajes.
-- Selector de alcaldía, vistas en porcentaje o conteo y tabla de cifras completas.
+- Nacidos fuera de CDMX = otra entidad + Estados Unidos + otro país. Extranjero = Estados Unidos + otro país. Las notas del Excel incluyen país no especificado en otro país y entidad no especificada en no especificado.
+- Residían fuera de CDMX en octubre de 2020 = otra entidad + Estados Unidos + otro país. Su universo es población de 5 años y más, distinto del de nacimiento.
+- El resumen de origen/residencia se pondera con las poblaciones de las **15 localidades incluidas** y está rotulado como resumen calculado. No se extrapola a toda CDMX ni se imputa Milpa Alta. La población cubierta por nacimiento suma 8,775,278.
+- Porcentajes por sexo = cantidades de mujeres/hombres de la hoja de población divididas entre su total. No se usan códigos de los microdatos.
+- Cambios 2020–2025 = resta de cantidades y `(2025 / 2020 - 1) × 100`. La tabla expandida conserva las columnas originales de diferencias y estructura.
+- Educación básica es un subtotal; sus tres niveles no se vuelven a sumar en la gráfica principal.
+- Ingresos y salud se grafican por separado, sin sumar categorías ni asumir exclusividad.
 
-## Publicar en GitHub Pages
+## Observaciones conservadas
 
-Sube el contenido de esta carpeta a la raíz de tu repositorio. Configura GitHub Pages para publicar desde la rama y carpeta que contengan `index.html` (habitualmente `main`, raíz). No requiere compilación. Las rutas relativas permiten usarlo en un repositorio de proyecto. Esta entrega no crea repositorios ni publica datos.
+1. Vivienda por alcaldía: 15 filas suman 2,979,488 frente al total 3,022,557. La diferencia de 43,069 no se asigna a Milpa Alta.
+2. Discapacidad CDMX: el encabezado solo dice **2020**. Los grupos suman 1,703,827 frente al total 1,703,791. No se presenta una cifra 2025 ni se corrige el total.
+3. Ingresos CDMX: la columna Estructura utiliza el total nacional 39,699,242 como denominador. Se conserva en la tabla; las gráficas muestran cantidades.
+4. Las notas de educación 1/–4/ fueron proporcionadas por el usuario como complemento al Excel y se muestran en ambos ámbitos: población de 3 años y más y las definiciones de estudios incluidos. Las notas de ingresos 1/–2/ proporcionadas por el usuario también se incorporaron en ambos ámbitos: porcentajes sobre el total de hogares, fuentes no excluyentes y definición de programas sociales. Las notas faltantes de salud no se infieren.
+5. Los tabulados de origen/residencia incluyen la leyenda de precisión, pero no identifican en la extracción valores de CV o intervalos por fila; no se inventan niveles de confianza.
 
-## Datos y alcance
-
-Se cuenta una fila no vacía de `database` como un registro. El archivo no tiene factor de expansión; el modo de registros presenta conteos sin ponderar y el modo de estimación usa el ajuste propio descrito arriba. No se suma `NUMPER`, no se deduplican filas y no se infiere un identificador de persona u hogar. Los tamaños de muestra por alcaldía no deben interpretarse como tamaños relativos de su población.
-
-La asignación de SEXO se basa en la instrucción del usuario, no en un diccionario oficial revisado. Confirma esta codificación antes de interpretar los resultados como distribución de mujeres y hombres.
-
-`ENT_PAIS_NAC` se interpreta como lugar de nacimiento. No mide última residencia, procedencia inmediata ni migración reciente. No permite conocer el nacimiento en la misma alcaldía. Nacionalidad y lugar de nacimiento se presentan como conceptos distintos.
-
-El catálogo `entidad` identifica los códigos 1–32 como entidades mexicanas. 9 corresponde a Ciudad de México. Códigos catalogados 100–536 se clasifican como extranjero (incluyen continentes, países y territorios). Los códigos 997, 998 y 999 se conservan como origen no especificado y se mantienen separados en el ranking, sin inferir que sean México o extranjero. Esto es una regla conservadora pendiente de confirmar con el diccionario de origen. No se reclasifican a partir de nacionalidad.
-
-En la comparación, los porcentajes usan el total de cada alcaldía. En el ranking, incluso al filtrar México o extranjero, usan el total de las alcaldías seleccionadas. Los no especificados siguen formando parte del denominador. Por redondeo, los porcentajes pueden no sumar exactamente 100.0%.
-
-La página está en español. No asigna año oficial a la encuesta a partir del nombre de la carpeta. La edad de la imagen se muestra solo como referencia general. Edad de los registros individuales, escolaridad, pertenencia indígena, NUMPER y SM quedan fuera de este análisis.
-
-## Actualizar desde otro Excel
-
-Con Python instalado:
+## Actualizar datos
 
 ```powershell
 python -m pip install -r requirements.txt
-python prepare_data.py "C:\ruta\Personas_EncuestaIntercensal.xlsx"
+python prepare_tabulados.py "C:\ruta\Data_Actualizada.xlsx"
 ```
 
-El script lee las tres hojas, verifica claves duplicadas en catálogos y concilia los totales antes de generar `data.js` y `data-quality.json`. El Excel permanece intacto. Revisa el resumen y `data-quality.json` después de actualizar; contiene conteos de códigos originales, claves sin catálogo, filas vacías y la huella SHA-256 del archivo fuente. Recarga la página después de actualizar.
+El proceso genera `tabulados.js`, `tabulados-audit.json`, `dashboard.bundle.js` e incorpora su versión en `index.html`. Verifica filas esperadas, totales por sexo y sumas porcentuales. Conserva y muestra discrepancias de las hojas; no corrige las cifras automáticamente.
 
-El navegador recibe conteos agregados por alcaldía y variable, sin filas individuales ni cruces de variables a nivel persona. El archivo original se mantiene fuera del sitio. La exclusión de Excel en `.gitignore` ayuda a mantenerlo separado del repositorio.
+Para cambios de diseño o lógica, edita `tabulados-app.js`, `tabulados.css`, el HTML y los estilos compartidos; después ejecuta `python build_dashboard.py`. El bundle contiene únicamente `map.js`, `tabulados.js` y `tabulados-app.js`.
 
-## Desarrollo
+Los archivos heredados `app.js`, `explorer.js`, `data.js`, `reference.js`, `data-quality.json` y `prepare_data.py` pueden seguir en el repositorio para referencia histórica. **La página actual no los carga ni usa sus cifras.** El actualizador correcto es `prepare_tabulados.py`.
 
-`index.html`: estructura; `styles.css` y `explorer.css`: diseño adaptable; `app.js`: filtros y gráficas; `explorer.js`: estimación, mapa y referencia; `data.js`: conteos; `map.js`: polígonos y procedencia; `reference.js`: total, poblaciones 2025, referencia 2020 y cifras de edad y sexo de la imagen. JavaScript y CSS nativos, sin dependencias de navegador. `prepare_data.py` requiere openpyxl únicamente para actualizar la extracción y conserva los insumos de referencia y mapa. Al cambiar los insumos poblacionales, actualiza `reference.js` y revisa que las claves coincidan con el catálogo.
+## Verificación
 
-Verificado: 612 combinaciones de base, alcaldía, variable, escala y filtro de origen; conciliación de la muestra y del total ajustado; correspondencia de las 16 claves con el mapa; selección de Cuauhtémoc mediante su polígono en el navegador. Se revisó visualmente el mapa. Las categorías pequeñas se consultan en la tabla o al situar el cursor sobre la barra.
+Se conciliaron 680 celdas de valores con el Excel extraído, se comprobaron las 13 hojas y 108 combinaciones de ámbito, tema y selección. Se verificaron las 16 regiones del mapa, la ausencia explícita de Milpa Alta donde corresponde y que el bundle no incluya datos de microdatos ni referencias poblacionales anteriores.
 
-## Carga y publicación
-
-El navegador carga `dashboard.bundle.js`, que reúne datos, mapa, referencias y lógica en un solo archivo. El HTML incluye una versión por contenido para evitar mezclar archivos antiguos de la caché. Al modificar los archivos JS fuente, ejecuta `python build_dashboard.py` y publica también `index.html` y `dashboard.bundle.js`. Si falta el archivo principal se muestra un aviso, en lugar de dejar el mapa vacío.
+La vista de población de CDMX compara 2020 y 2025 para el total y cada alcaldía seleccionada, con cambio absoluto, porcentual, gráfica y tabla comparativa. La base 2020 se conserva en `population-city-2020.json`: tabla complementaria proporcionada por el usuario, relacionada por nombre con Poblacion Cdmx del Excel (2025). Sus 16 filas suman 9,209,944.

@@ -1,0 +1,23 @@
+{
+  "source": "Tabla de población 2020 por alcaldía proporcionada por el usuario en la conversación.",
+  "year": 2020,
+  "values": {
+    "total": 9209944,
+    "iztapalapa": 1835486,
+    "gustavo a. madero": 1173351,
+    "alvaro obregon": 759137,
+    "tlalpan": 699928,
+    "coyoacan": 614447,
+    "cuauhtemoc": 545884,
+    "miguel hidalgo": 414470,
+    "venustiano carranza": 443704,
+    "xochimilco": 442178,
+    "azcapotzalco": 432205,
+    "benito juarez": 434153,
+    "milpa alta": 152685,
+    "iztacalco": 404695,
+    "tlahuac": 392313,
+    "la magdalena contreras": 247622,
+    "cuajimalpa de morelos": 217686
+  }
+}
